@@ -15,7 +15,6 @@ type Handler struct {
 
 const (
         Caller = "018882000"
-        Callee = "2348148515007"
 	Codec  = "PCMU,PCMA"
 
 )
@@ -46,7 +45,7 @@ func (h *Handler) OnConnect(con *esl.Connection) {
                         fmt.Println("hello")
 			time.Sleep(2000 * time.Millisecond)
                 }else{
-                        BgJobId, _ := con.BgApi("originate", "{origination_caller_id_number="+Caller+",absolute_codec_string="+Codec+",execute_on_answer='transfer ANSWEREDCALL XML default'}sofia/gateway/178.62.27.239/"+lPop.Val(), "&park()")
+                        BgJobId, _ := con.BgApi("originate", "{origination_caller_id_number="+Caller+",absolute_codec_string="+Codec+",execute_on_answer='transfer ANSWEREDCALL XML default'}sofia/gateway/provider/"+lPop.Val(), "&park()")
                         log.Println("originate bg job id:", BgJobId)
                         time.Sleep(2000 * time.Millisecond)
                 }
@@ -72,10 +71,8 @@ func (h *Handler) OnEvent(con *esl.Connection, ev *esl.Event) {
                 log.Printf("bg job result:%s\n", ev.GetTextBody())
         case esl.CHANNEL_ANSWER:
                 log.Println("call answered, starting moh")
-           //     con.Execute("playback", ev.UId, "/tmp/UDOM.wav")
         case esl.CHANNEL_HANGUP:
                 hupcause := ev.Get("Hangup-Cause")
                 log.Printf("call terminated with cause %s", hupcause)
-               // con.Close()
         }
 }
