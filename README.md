@@ -19,5 +19,6 @@
 7. API that will stop/start/restart the campaign
 8. Successfull and failed one to redis
 9. Multiple FreeSWITCH
+10. redis cluster
 
    
